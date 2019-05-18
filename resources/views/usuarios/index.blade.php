@@ -24,7 +24,6 @@
 						<th>Permisos</th>
 						<th>Fecha de creacion</th>
 						<th>Fecha de actalizacion</th>
-						<th>Ver</th>
 						@can('Editar usuarios')
 							<th>Editar</th>
 						@endcan
@@ -54,9 +53,6 @@
 							</td>
 							<td>{{ $user->created_at }}</td>
 							<td>{{ $user->updated_at }}</td>
-							<td style="text-align: center;">
-								<a class="btn btn-success btn-sm" href="{{ route( 'usuarios.show', $user->id ) }}" role="button"><i class="fas fa-eye"></i></a>
-							</td>
 							@can('Editar usuarios')
 								<td style="text-align: center;">
 									<a class="btn btn-warning btn-sm" href="{{ route('usuarios.edit', $user->id) }}" role="button"><i class="fas fa-edit"></i></a>
@@ -64,7 +60,11 @@
 							@endcan
 							@can('Eliminar usuarios')
 								<td style="text-align: center;">
-								
+									<form id="delete-asesor" action="{{ route('usuarios.destroy', $user->id) }}" method="POST" >
+	                            	<input name="_method" type="hidden" value="DELETE">
+	                                {{ csrf_field() }}
+	                                <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+	                            </form>
 								</td>
 							@endcan
 						</tr>

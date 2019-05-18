@@ -18,10 +18,11 @@ class UsuariosController extends Controller
      */
     public function index()
     {
-
-        //$users = User::find(1);
-        //$users->givePermissionTo( Permission::find( 1 )->name );
-
+        /*
+        $user = User::find(2);
+        $roles = $user->getRoleNames();
+        $permiso = $user->hasRole( 'Administrador' );
+        */
         $users = User::all();
         return view( 'usuarios.index', compact('users') );
 
@@ -65,7 +66,6 @@ class UsuariosController extends Controller
             $user->givePermissionTo( Permission::find( $permisos[$i] )->name );
         }
 
-
         $users = User::all();
         return view( 'usuarios.index', compact('users') );
     }
@@ -78,7 +78,12 @@ class UsuariosController extends Controller
      */
     public function show($id)
     {
-        //
+        $user  = User::findOrFail( $id );
+        $roles = DB::table('roles')->pluck('name', 'id');
+        $permissionNames = $user->getPermissionNames();
+        $permisos = Permission::all();
+
+        return view( 'usuarios.show', compact('user', 'roles', 'permisos', 'permissionNames') );
     }
 
     /**
@@ -89,7 +94,12 @@ class UsuariosController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user  = User::findOrFail( $id );
+        $roles = DB::table('roles')->pluck('name', 'id');
+        $permissionNames = $user->getPermissionNames();
+        $permisos = Permission::all();
+
+        return view( 'usuarios.edit', compact('user', 'roles', 'permisos', 'permissionNames') );
     }
 
     /**
@@ -101,7 +111,60 @@ class UsuariosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
+        /**
+         * Si el pass viene vacio no se actualiza el campo
+         * si vine con datos se actualiza
+         */
+        if ( $request->input("password") != NULL ) {
+            $user = User::where('id', $id)
+                    ->update([
+                        'name'     => $request->input("name"),
+                        'email'    => $request->input("email"),
+                        'password' => Hash::make( $request->input("password") )
+                    ]);
+        } else {
+            $user = User::findOrFail( $id );
+            $user->name  = $request->input("name");
+            $user->email = $request->input("email");
+
+            $user->save();
+        }
+
+        /**
+         * Se valida si es el rol ya cuenta con este
+         * Si no se remueve el  y se asigna en nuevo
+         */
+        
+        $v = $user->hasRole( Role::find( $request->input("rol") )->name );
+
+        if ( !$v ) {
+            $rol = $user->getRoleNames(); // Obtengo su rol anterior
+            $user->removeRole( $rol[0] ); // Le quito el rol anterior
+            $user->assignRole( Role::find( $request->input("rol") )->name ); // Le asigno el nuevo rol
+        } else {
+            $user->assignRole( Role::find( $request->input("rol") )->name ); // Le asigno el rol
+        }
+
+        /**
+         * Obtenemos todos los permisos y se los quitamos al usuario
+         * Para despues asignarle los que seleccionaron al editarlo
+         */
+        $permissionNames = $user->getPermissionNames();
+
+        for ($i=0; $i < count( $permissionNames ); $i++) { 
+            $user->revokePermissionTo( $permissionNames[$i] );
+        }
+
+        $permisos = $request->input("permisos");
+
+        for ($i=0; $i < count( $permisos ); $i++) { 
+            $user->givePermissionTo( Permission::find( $permisos[$i] )->name );
+        }
+
+        $users = User::all();
+        return view( 'usuarios.index', compact('users') );
+
     }
 
     /**
@@ -112,6 +175,7 @@ class UsuariosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user  = User::findOrFail( $id );
+        $user->delete();
     }
 }

@@ -13,20 +13,5 @@ $(document).ready(function() {
 
     $('.solo-fecha').datepicker({ dateFormat: 'dd-mm-yy' });
 
-    $("#tableInstalaciones").dblclick(function(event) {
-    	
-    	id = $('#tableInstalaciones tbody tr').attr('idInsta');
-
-    	window.location.href = id;
-
-    });
-
-    $("#tableAsesores tbody tr").dblclick(function(event) {
-    	
-    	id = $(this).attr('idTec');
-
-    	window.location.href = id;
-
-    });
 
 });
