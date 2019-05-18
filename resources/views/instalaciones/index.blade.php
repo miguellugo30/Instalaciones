@@ -8,14 +8,18 @@
 			
 			<legend>
 				Instalaciones
-				<a href="{{ route('excel.index') }}" type="button" class="btn btn-primary btn-sm" style="float: right;">
-					<i class="fas fa-file-excel"></i>
-					Exportar
-				</a>
-				<a href="{{ route('instalaciones.create') }}" type="button" class="btn btn-primary btn-sm" style="float: right;margin-right: 5px;">
-					<i class="fas fa-user-plus"></i>
-					Nueva Instalacion
-				</a>
+				@can('Exportar instalaciones')
+					<a href="{{ route('excel.index') }}" type="button" class="btn btn-primary btn-sm" style="float: right;">
+						<i class="fas fa-file-excel"></i>
+						Exportar
+					</a>
+				@endcan
+				@can('Crear instalaciones')
+					<a href="{{ route('instalaciones.create') }}" type="button" class="btn btn-primary btn-sm" style="float: right;margin-right: 5px;">
+						<i class="fas fa-user-plus"></i>
+						Nueva Instalacion
+					</a>
+				@endcan
 			</legend>
 			<table id="tableInstalaciones" class="display table table-bordered table-condensed" style="width:100%">
 				<thead>
@@ -28,8 +32,13 @@
 						<th>Asesor</th>
 						<th>Modelo equipo</th>
 						<th>Ver</th>
-						<th>Editar</th>
-						<th>Eliminar</th>
+						@can('Editar instalaciones')
+							<th>Editar</th>
+						@endcan
+						@can('Eliminar instalaciones')
+							<th>Eliminar</th>
+						@endcan
+							<th>Confirmado</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -45,12 +54,25 @@
 							<td style="text-align: center;">
 								<a class="btn btn-success btn-sm" href="{{ route( 'instalaciones.show', $inst->id_instalacion ) }}" role="button"><i class="fas fa-eye"></i></a>
 							</td>
-							<td style="text-align: center;">
-								<a class="btn btn-warning btn-sm" href="{{ route('instalaciones.edit', $inst->id_instalacion) }}" role="button"><i class="fas fa-edit"></i></a>
-							</td>
-							<td style="text-align: center;">
-								
-							</td>
+							@can('Editar instalaciones')
+								<td style="text-align: center;">
+									@if( $inst->estatus == 1 )
+									<a class="btn btn-warning btn-sm" href="{{ route('instalaciones.edit', $inst->id_instalacion) }}" role="button"><i class="fas fa-edit"></i></a>
+									@endif
+								</td>
+							@endcan
+							@can('Eliminar instalaciones')
+								<td style="text-align: center;">
+									
+								</td>
+							@endcan
+								<td style="text-align: center;">
+									@if( $inst->estatus == 1 )
+										<i class="fas fa-times-circle fa-lg" style="color: red"></i>
+									@else
+										<i class="fas fa-check-circle fa-lg" style="color: green"></i>
+									@endif
+								</td>
 						</tr>
 					@endforeach
 

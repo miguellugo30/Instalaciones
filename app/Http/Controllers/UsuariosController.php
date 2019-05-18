@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Http\Request;
+use DB;
+use Illuminate\Support\Facades\Hash;
 
 class UsuariosController extends Controller
 {
@@ -15,9 +18,13 @@ class UsuariosController extends Controller
      */
     public function index()
     {
-        $users = User::all();
 
+        //$users = User::find(1);
+        //$users->givePermissionTo( Permission::find( 1 )->name );
+
+        $users = User::all();
         return view( 'usuarios.index', compact('users') );
+
     }
 
     /**
@@ -28,8 +35,12 @@ class UsuariosController extends Controller
     public function create()
     {
         
-        $permisos = Role::all();
-        return view( 'usuarios.create', compact('permisos') );
+        $roles    = DB::table('roles')->pluck('name', 'id');
+        //$permisos = DB::table('permissions')->pluck('name', 'id');
+
+        //$roles    = Role::all();
+        $permisos = Permission::all();
+        return view( 'usuarios.create', compact('roles', 'permisos') );
     }
 
     /**
@@ -40,7 +51,23 @@ class UsuariosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+     
+        $user = User::create([
+                                'name'     => $request->input("name"),
+                                'email'    => $request->input("email"),
+                                'password' => Hash::make( $request->input("password") )
+                            ]);
+
+        $user->assignRole( Role::find( $request->input("rol") )->name );
+        $permisos = $request->input("permisos");
+
+        for ($i=0; $i < count( $permisos ); $i++) { 
+            $user->givePermissionTo( Permission::find( $permisos[$i] )->name );
+        }
+
+
+        $users = User::all();
+        return view( 'usuarios.index', compact('users') );
     }
 
     /**

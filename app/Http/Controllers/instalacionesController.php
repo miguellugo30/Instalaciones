@@ -23,7 +23,8 @@ class instalacionesController extends Controller
                                 'datos_vehiculo.marca', 
                                 'datos_vehiculo.modelo', 
                                 'datos_asesor.nombre_completo as asesor', 
-                                'datos_equipo.modelo_equipo')
+                                'datos_equipo.modelo_equipo',
+                                'datos_instalacion.estatus')
                     ->join( 'datos_asesor',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'datos_asesor.id_asesor' )
                     ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
                     ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
@@ -105,7 +106,8 @@ class instalacionesController extends Controller
                                 'datos_vehiculo.marca', 
                                 'datos_vehiculo.modelo', 
                                 'datos_asesor.nombre_completo as asesor', 
-                                'datos_equipo.modelo_equipo')
+                                'datos_equipo.modelo_equipo',
+                                'datos_instalacion.estatus')
                     ->join( 'datos_asesor',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'datos_asesor.id_asesor' )
                     ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
                     ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
@@ -272,7 +274,8 @@ class instalacionesController extends Controller
                                 'datos_vehiculo.marca', 
                                 'datos_vehiculo.modelo', 
                                 'datos_asesor.nombre_completo as asesor', 
-                                'datos_equipo.modelo_equipo')
+                                'datos_equipo.modelo_equipo',
+                                'datos_instalacion.estatus')
                     ->join( 'datos_asesor',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'datos_asesor.id_asesor' )
                     ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
                     ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
