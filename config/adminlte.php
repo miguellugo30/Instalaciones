@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'title' => 'Instalaciones',
+    'title' => 'Instalaciones ALEX',
 
     'title_prefix' => '',
 
@@ -30,9 +30,9 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<b>Instalaciones</b>ALEX',
 
-    'logo_mini' => '<b>A</b>LT',
+    'logo_mini' => '<b>A</b>LE',
 
     /*
     |--------------------------------------------------------------------------
