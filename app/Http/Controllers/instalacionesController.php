@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DB;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class instalacionesController extends Controller
 {
@@ -16,22 +17,46 @@ class instalacionesController extends Controller
     public function index()
     {
 
-        $insta = DB::table('datos_instalacion')
-                    ->select(   'datos_instalacion.id_instalacion', 
-                                'datos_instalacion.fecha_ingreso', 
-                                'datos_instalacion.fecha_entrega', 
-                                'datos_cliente.nombre_completo AS cliente', 
-                                'datos_vehiculo.marca', 
-                                'datos_vehiculo.modelo', 
-                                'users.name as asesor', 
-                                'datos_equipo.modelo_equipo',
-                                'datos_instalacion.estatus')
-                    ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
-                    ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
-                    ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
-                    ->join( 'datos_equipo',   'datos_instalacion.datos_equipo_id_equipo',     '=', 'datos_equipo.id_equipo' )
-                    ->whereIn('datos_instalacion.estatus', [1, 2])
-                    ->get();
+        $rol = Auth::user()->getRoleNames();
+
+        if ( $rol[0] == 'Asesor' ) {
+
+            $insta = DB::table('datos_instalacion')
+                        ->select(   'datos_instalacion.id_instalacion', 
+                                    'datos_instalacion.fecha_ingreso', 
+                                    'datos_instalacion.fecha_entrega', 
+                                    'datos_cliente.nombre_completo AS cliente', 
+                                    'datos_vehiculo.marca', 
+                                    'datos_vehiculo.modelo', 
+                                    'users.name as asesor', 
+                                    'datos_equipo.modelo_equipo',
+                                    'datos_instalacion.estatus')
+                        ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
+                        ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
+                        ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
+                        ->join( 'datos_equipo',   'datos_instalacion.datos_equipo_id_equipo',     '=', 'datos_equipo.id_equipo' )
+                        ->whereIn('datos_instalacion.estatus', [1, 2])
+                        ->where('datos_instalacion.datos_asesor_id_asesor', Auth::id() )
+                        ->get();
+        } else {
+
+            $insta = DB::table('datos_instalacion')
+                        ->select(   'datos_instalacion.id_instalacion', 
+                                    'datos_instalacion.fecha_ingreso', 
+                                    'datos_instalacion.fecha_entrega', 
+                                    'datos_cliente.nombre_completo AS cliente', 
+                                    'datos_vehiculo.marca', 
+                                    'datos_vehiculo.modelo', 
+                                    'users.name as asesor', 
+                                    'datos_equipo.modelo_equipo',
+                                    'datos_instalacion.estatus')
+                        ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
+                        ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
+                        ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
+                        ->join( 'datos_equipo',   'datos_instalacion.datos_equipo_id_equipo',     '=', 'datos_equipo.id_equipo' )
+                        ->whereIn('datos_instalacion.estatus', [1, 2])
+                        ->get();
+        }
 
         return view( 'instalaciones.index', compact('insta') );
 
@@ -44,8 +69,15 @@ class instalacionesController extends Controller
      */
     public function create()
     {
-        $asesores =  DB::table('datos_asesor')->get();
-        $users = User::all();
+        //$asesores =  DB::table('datos_asesor')->get();
+        $rol = Auth::user()->getRoleNames();
+
+        if ( $rol[0] == 'Asesor' ) {
+            $users = User::where('id', Auth::id())->get();
+        } else {
+            $users = User::all();
+        }
+
         return view( 'instalaciones.create', compact('asesores', 'users') );
     }
 
@@ -57,6 +89,12 @@ class instalacionesController extends Controller
      */
     public function store(Request $request)
     {
+
+
+        $file = $request->file('testigoFoto');//obtenemos el campo file definido en el formulario
+        $nombre = $file->getClientOriginalName();//obtenemos el nombre del archivo
+        \Storage::disk('public')->put($nombre,  \File::get($file));//indicamos que queremos guardar un nuevo archivo en el disco local
+
         $idCliente = DB::table('datos_cliente')
                     ->insertGetId([
                                     'nombre_completo' => $request->input("nombre_completo"),
@@ -93,6 +131,7 @@ class instalacionesController extends Controller
             [
              'fecha_ingreso'              => $request->input("fecha_ingreso"),
              'fecha_entrega'              => $request->input("fecha_entrega"),
+             'nombre_img'                 => $nombre,
              'estatus'                    => "1",
              'datos_asesor_id_asesor'     => $request->input("asesor"),
              'datos_equipo_id_equipo'     => $idEquipo,
@@ -101,22 +140,46 @@ class instalacionesController extends Controller
             ]
         );
 
-        $insta = DB::table('datos_instalacion')
-                    ->select(   'datos_instalacion.id_instalacion', 
-                                'datos_instalacion.fecha_ingreso', 
-                                'datos_instalacion.fecha_entrega', 
-                                'datos_cliente.nombre_completo AS cliente', 
-                                'datos_vehiculo.marca', 
-                                'datos_vehiculo.modelo', 
-                                'users.name as asesor', 
-                                'datos_equipo.modelo_equipo',
-                                'datos_instalacion.estatus')
-                    ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
-                    ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
-                    ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
-                    ->join( 'datos_equipo',   'datos_instalacion.datos_equipo_id_equipo',     '=', 'datos_equipo.id_equipo' )
-                    ->whereIn('datos_instalacion.estatus', [1, 2])
-                    ->get();
+                $rol = Auth::user()->getRoleNames();
+
+        if ( $rol[0] == 'Asesor' ) {
+
+            $insta = DB::table('datos_instalacion')
+                        ->select(   'datos_instalacion.id_instalacion', 
+                                    'datos_instalacion.fecha_ingreso', 
+                                    'datos_instalacion.fecha_entrega', 
+                                    'datos_cliente.nombre_completo AS cliente', 
+                                    'datos_vehiculo.marca', 
+                                    'datos_vehiculo.modelo', 
+                                    'users.name as asesor', 
+                                    'datos_equipo.modelo_equipo',
+                                    'datos_instalacion.estatus')
+                        ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
+                        ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
+                        ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
+                        ->join( 'datos_equipo',   'datos_instalacion.datos_equipo_id_equipo',     '=', 'datos_equipo.id_equipo' )
+                        ->whereIn('datos_instalacion.estatus', [1, 2])
+                        ->where('datos_instalacion.datos_asesor_id_asesor', Auth::id() )
+                        ->get();
+        } else {
+
+            $insta = DB::table('datos_instalacion')
+                        ->select(   'datos_instalacion.id_instalacion', 
+                                    'datos_instalacion.fecha_ingreso', 
+                                    'datos_instalacion.fecha_entrega', 
+                                    'datos_cliente.nombre_completo AS cliente', 
+                                    'datos_vehiculo.marca', 
+                                    'datos_vehiculo.modelo', 
+                                    'users.name as asesor', 
+                                    'datos_equipo.modelo_equipo',
+                                    'datos_instalacion.estatus')
+                        ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
+                        ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
+                        ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
+                        ->join( 'datos_equipo',   'datos_instalacion.datos_equipo_id_equipo',     '=', 'datos_equipo.id_equipo' )
+                        ->whereIn('datos_instalacion.estatus', [1, 2])
+                        ->get();
+        }
 
         return view( 'instalaciones.index', compact('insta') );
 
@@ -153,7 +216,8 @@ class instalacionesController extends Controller
                                 'datos_vehiculo.anio',
                                 'datos_vehiculo.placas',
                                 'datos_vehiculo.num_serie',
-                                'datos_vehiculo.tag'
+                                'datos_vehiculo.tag',
+                                'datos_instalacion.nombre_img'
                             )
                     ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
                     ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
@@ -162,7 +226,10 @@ class instalacionesController extends Controller
                     ->where( 'id_instalacion', $id )
                     ->get();
 
-        return view( 'instalaciones.show', compact('insta') );
+        $public_path = public_path();
+        $url = $public_path.'/storage/';
+
+        return view( 'instalaciones.show', compact('insta', 'url') );
     }
 
     /**
@@ -270,22 +337,46 @@ class instalacionesController extends Controller
             ]
         );
 
-        $insta = DB::table('datos_instalacion')
-                    ->select(   'datos_instalacion.id_instalacion', 
-                                'datos_instalacion.fecha_ingreso', 
-                                'datos_instalacion.fecha_entrega', 
-                                'datos_cliente.nombre_completo AS cliente', 
-                                'datos_vehiculo.marca', 
-                                'datos_vehiculo.modelo', 
-                                'users.name as asesor', 
-                                'datos_equipo.modelo_equipo',
-                                'datos_instalacion.estatus')
-                    ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
-                    ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
-                    ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
-                    ->join( 'datos_equipo',   'datos_instalacion.datos_equipo_id_equipo',     '=', 'datos_equipo.id_equipo' )
-                    ->whereIn('datos_instalacion.estatus', [1, 2])
-                    ->get();
+        $rol = Auth::user()->getRoleNames();
+
+        if ( $rol[0] == 'Asesor' ) {
+
+            $insta = DB::table('datos_instalacion')
+                        ->select(   'datos_instalacion.id_instalacion', 
+                                    'datos_instalacion.fecha_ingreso', 
+                                    'datos_instalacion.fecha_entrega', 
+                                    'datos_cliente.nombre_completo AS cliente', 
+                                    'datos_vehiculo.marca', 
+                                    'datos_vehiculo.modelo', 
+                                    'users.name as asesor', 
+                                    'datos_equipo.modelo_equipo',
+                                    'datos_instalacion.estatus')
+                        ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
+                        ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
+                        ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
+                        ->join( 'datos_equipo',   'datos_instalacion.datos_equipo_id_equipo',     '=', 'datos_equipo.id_equipo' )
+                        ->whereIn('datos_instalacion.estatus', [1, 2])
+                        ->where('datos_instalacion.datos_asesor_id_asesor', Auth::id() )
+                        ->get();
+        } else {
+
+            $insta = DB::table('datos_instalacion')
+                        ->select(   'datos_instalacion.id_instalacion', 
+                                    'datos_instalacion.fecha_ingreso', 
+                                    'datos_instalacion.fecha_entrega', 
+                                    'datos_cliente.nombre_completo AS cliente', 
+                                    'datos_vehiculo.marca', 
+                                    'datos_vehiculo.modelo', 
+                                    'users.name as asesor', 
+                                    'datos_equipo.modelo_equipo',
+                                    'datos_instalacion.estatus')
+                        ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
+                        ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
+                        ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
+                        ->join( 'datos_equipo',   'datos_instalacion.datos_equipo_id_equipo',     '=', 'datos_equipo.id_equipo' )
+                        ->whereIn('datos_instalacion.estatus', [1, 2])
+                        ->get();
+        }
 
         return view( 'instalaciones.index', compact('insta') );
 
@@ -305,22 +396,46 @@ class instalacionesController extends Controller
                         'estatus' => '3'
                     ]);
 
-        $insta = DB::table('datos_instalacion')
-                    ->select(   'datos_instalacion.id_instalacion', 
-                                'datos_instalacion.fecha_ingreso', 
-                                'datos_instalacion.fecha_entrega', 
-                                'datos_cliente.nombre_completo AS cliente', 
-                                'datos_vehiculo.marca', 
-                                'datos_vehiculo.modelo', 
-                                'users.name as asesor', 
-                                'datos_equipo.modelo_equipo',
-                                'datos_instalacion.estatus')
-                    ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
-                    ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
-                    ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
-                    ->join( 'datos_equipo',   'datos_instalacion.datos_equipo_id_equipo',     '=', 'datos_equipo.id_equipo' )
-                    ->whereIn('datos_instalacion.estatus', [1, 2])
-                    ->get();
+        $rol = Auth::user()->getRoleNames();
+
+        if ( $rol[0] == 'Asesor' ) {
+
+            $insta = DB::table('datos_instalacion')
+                        ->select(   'datos_instalacion.id_instalacion', 
+                                    'datos_instalacion.fecha_ingreso', 
+                                    'datos_instalacion.fecha_entrega', 
+                                    'datos_cliente.nombre_completo AS cliente', 
+                                    'datos_vehiculo.marca', 
+                                    'datos_vehiculo.modelo', 
+                                    'users.name as asesor', 
+                                    'datos_equipo.modelo_equipo',
+                                    'datos_instalacion.estatus')
+                        ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
+                        ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
+                        ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
+                        ->join( 'datos_equipo',   'datos_instalacion.datos_equipo_id_equipo',     '=', 'datos_equipo.id_equipo' )
+                        ->whereIn('datos_instalacion.estatus', [1, 2])
+                        ->where('datos_instalacion.datos_asesor_id_asesor', Auth::id() )
+                        ->get();
+        } else {
+
+            $insta = DB::table('datos_instalacion')
+                        ->select(   'datos_instalacion.id_instalacion', 
+                                    'datos_instalacion.fecha_ingreso', 
+                                    'datos_instalacion.fecha_entrega', 
+                                    'datos_cliente.nombre_completo AS cliente', 
+                                    'datos_vehiculo.marca', 
+                                    'datos_vehiculo.modelo', 
+                                    'users.name as asesor', 
+                                    'datos_equipo.modelo_equipo',
+                                    'datos_instalacion.estatus')
+                        ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
+                        ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
+                        ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
+                        ->join( 'datos_equipo',   'datos_instalacion.datos_equipo_id_equipo',     '=', 'datos_equipo.id_equipo' )
+                        ->whereIn('datos_instalacion.estatus', [1, 2])
+                        ->get();
+        }
 
         return redirect()->route('instalaciones.index', compact('insta') );
     }
@@ -333,22 +448,46 @@ class instalacionesController extends Controller
                         'estatus' => '2'
                     ]);
 
-        $insta = DB::table('datos_instalacion')
-                    ->select(   'datos_instalacion.id_instalacion', 
-                                'datos_instalacion.fecha_ingreso', 
-                                'datos_instalacion.fecha_entrega', 
-                                'datos_cliente.nombre_completo AS cliente', 
-                                'datos_vehiculo.marca', 
-                                'datos_vehiculo.modelo', 
-                                'users.name as asesor', 
-                                'datos_equipo.modelo_equipo',
-                                'datos_instalacion.estatus')
-                    ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
-                    ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
-                    ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
-                    ->join( 'datos_equipo',   'datos_instalacion.datos_equipo_id_equipo',     '=', 'datos_equipo.id_equipo' )
-                    ->whereIn('datos_instalacion.estatus', [1, 2])
-                    ->get();
+                $rol = Auth::user()->getRoleNames();
+
+        if ( $rol[0] == 'Asesor' ) {
+
+            $insta = DB::table('datos_instalacion')
+                        ->select(   'datos_instalacion.id_instalacion', 
+                                    'datos_instalacion.fecha_ingreso', 
+                                    'datos_instalacion.fecha_entrega', 
+                                    'datos_cliente.nombre_completo AS cliente', 
+                                    'datos_vehiculo.marca', 
+                                    'datos_vehiculo.modelo', 
+                                    'users.name as asesor', 
+                                    'datos_equipo.modelo_equipo',
+                                    'datos_instalacion.estatus')
+                        ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
+                        ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
+                        ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
+                        ->join( 'datos_equipo',   'datos_instalacion.datos_equipo_id_equipo',     '=', 'datos_equipo.id_equipo' )
+                        ->whereIn('datos_instalacion.estatus', [1, 2])
+                        ->where('datos_instalacion.datos_asesor_id_asesor', Auth::id() )
+                        ->get();
+        } else {
+
+            $insta = DB::table('datos_instalacion')
+                        ->select(   'datos_instalacion.id_instalacion', 
+                                    'datos_instalacion.fecha_ingreso', 
+                                    'datos_instalacion.fecha_entrega', 
+                                    'datos_cliente.nombre_completo AS cliente', 
+                                    'datos_vehiculo.marca', 
+                                    'datos_vehiculo.modelo', 
+                                    'users.name as asesor', 
+                                    'datos_equipo.modelo_equipo',
+                                    'datos_instalacion.estatus')
+                        ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
+                        ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
+                        ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
+                        ->join( 'datos_equipo',   'datos_instalacion.datos_equipo_id_equipo',     '=', 'datos_equipo.id_equipo' )
+                        ->whereIn('datos_instalacion.estatus', [1, 2])
+                        ->get();
+        }
 
         return redirect()->route('instalaciones.index', compact('insta') );
     }

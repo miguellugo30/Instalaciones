@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'AdminLTE')
+@section('title', 'Instalaciones')
 
 @section('content')
     <div class="col-md-12" id="viewAsesores">
@@ -20,7 +20,7 @@
 				<tr >
 					<th>Nombre Completo</th>
 					<th>Teléfono</th>
-					<th>Correo Electronico</th>
+					<th>Correo Electrónico</th>
 					<th>Ver</th>
 					@can('Editar asesores')
 						<th>Editar</th>

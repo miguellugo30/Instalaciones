@@ -1,12 +1,12 @@
 @extends('adminlte::page')
 
-@section('title', 'AdminLTE')
+@section('title', 'Instalaciones')
 
 @section('content')
    
 <fieldset>
-	<legend>Nueva Instalacion</legend>
-	<form method="POST" action="{{ route('instalaciones.store') }}">
+	<legend>Nueva Instalación</legend>
+	<form method="POST" action="{{ route('instalaciones.store') }}" accept-charset="UTF-8" enctype="multipart/form-data">
 		{{ csrf_field() }}
         <div class="col-md-6">        
             <fieldset>
@@ -110,6 +110,10 @@
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control input-sm " id="tag" name="tag" placeholder="Tag">
+                </div>
+                 <div class="form-group">
+                    <label for="testigoFoto">Testigo fotográfico:</label>
+                    <input type="file" id="testigoFoto" name="testigoFoto" >
                 </div>
             </fieldset>
         </div>

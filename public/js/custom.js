@@ -11,7 +11,6 @@ $(document).ready(function() {
         this.value = (this.value + '').replace(/[^0-9,-]/g, '');
     });
 
-    $('.solo-fecha').datepicker({ dateFormat: 'dd-mm-yy' });
-
+    $('.solo-fecha').datepicker({ dateFormat: 'yy-mm-dd' });
 
 });

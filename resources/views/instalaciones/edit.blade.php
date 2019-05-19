@@ -1,11 +1,11 @@
 @extends('adminlte::page')
 
-@section('title', 'AdminLTE')
+@section('title', 'Instalaciones')
 
 @section('content')
    
 <fieldset>
-	<legend>Editar Instalacion</legend>
+	<legend>Editar Instalación</legend>
 	@foreach( $insta as $inst )
 		<form method="POST" action="{{ route('instalaciones.update', $inst->id_instalacion) }}">
 			<input name="_method"     type="hidden" value="PUT">
@@ -91,7 +91,7 @@
 	
 	        <div class="col-md-6">        
 	            <fieldset>
-	                <legend>Datos Vehiculo</legend>
+	                <legend>Datos Vehículo</legend>
 	                <div class="form-group">
 	                    <input type="text" class="form-control input-sm" id="marca" name="marca" placeholder="Marca" value="{{ $inst->marca }}">
 	                </div>

@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'AdminLTE')
+@section('title', 'Instalaciones')
 
 @section('content')
     <div class="col-md-12" id="viewAsesores">
@@ -14,11 +14,11 @@
 						{{ $tecnico->nombre_completo }}
 					</div>
 					<div class="form-group">
-						<label for="telefono">Télefono:</label>
+						<label for="telefono">Teléfono:</label>
 						{{ $tecnico->telefono }}
 					</div>
 					<div class="form-group">
-						<label for="email">Correo Electronico:</label>
+						<label for="email">Correo Electrónico:</label>
 						{{ $tecnico->email }}
 					</div>
 				@endforeach

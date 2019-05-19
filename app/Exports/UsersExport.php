@@ -53,7 +53,7 @@ class UsersExport implements FromCollection,WithHeadings
                             'datos_vehiculo.placas', 
                             'datos_vehiculo.num_serie', 
                             'datos_cliente.nombre_completo AS cliente', 
-                            'datos_asesor.nombre_completo as asesor', 
+                            'users.name as asesor', 
                             'datos_equipo.modelo_equipo',
                             'datos_equipo.no_serie_ecu',
                             'datos_equipo.reductor',
@@ -66,10 +66,11 @@ class UsersExport implements FromCollection,WithHeadings
                             'datos_vehiculo.tag',
                             'datos_cliente.telefono'
                             )
-                    ->join( 'datos_asesor',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'datos_asesor.id_asesor' )
+                    ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
                     ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
                     ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
                     ->join( 'datos_equipo',   'datos_instalacion.datos_equipo_id_equipo',     '=', 'datos_equipo.id_equipo' )
+                    ->where( 'datos_instalacion.estatus', 2)
                     ->get();
         //return User::all();
         return $insta;

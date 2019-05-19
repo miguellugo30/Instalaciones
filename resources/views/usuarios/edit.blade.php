@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'AdminLTE')
+@section('title', 'Instalaciones')
 
 @section('content')
     <div class="col-md-12" id="viewInstalaciones">

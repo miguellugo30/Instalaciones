@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'AdminLTE')
+@section('title', 'Instalaciones')
 
 @section('content')
     <div class="col-md-12" id="viewInstalaciones">
@@ -19,11 +19,11 @@
 				<thead>
 					<tr>
 						<th>Nombre</th>
-						<th>Correo Electronico</th>
+						<th>Correo Electrónico</th>
 						<th>Rol</th>
 						<th>Permisos</th>
-						<th>Fecha de creacion</th>
-						<th>Fecha de actalizacion</th>
+						<th>Fecha de creación</th>
+						<th>Fecha de actualización</th>
 						@can('Editar usuarios')
 							<th>Editar</th>
 						@endcan

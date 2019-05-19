@@ -1,11 +1,11 @@
 @extends('adminlte::page')
 
-@section('title', 'AdminLTE')
+@section('title', 'Instalaciones')
 
 @section('content')
    
 <fieldset>
-	<legend>Instalacion</legend>
+	<legend>Instalación</legend>
     @foreach( $insta as $inst )
 	   <form method="POST" action="{{ route('instalaciones.update', $inst->id_instalacion) }}">
 		    {{ csrf_field() }}
@@ -17,11 +17,11 @@
             			{{  $inst->cliente }}
             		</div>
             		<div class="form-group">
-                        <label for="nombre_completo">Telefono:</label>
+                        <label for="nombre_completo">Teléfono:</label>
                         {{  $inst->telefono_cliente }}
             		</div>
             		<div class="form-group">
-            			<label for="nombre_completo">Correo Electronico:</label>
+            			<label for="nombre_completo">Correo Electrónico:</label>
                         {{  $inst->email_cliente }}
             		</div>
                 </fieldset>
@@ -95,14 +95,14 @@
                         </div> 
                     </div> 
                     <div class="form-group">
-                        <label for="nombre_completo">Fecha de fabricacion:</label>
+                        <label for="nombre_completo">Fecha de fabricación:</label>
                             {{  $inst->fecha_fabricacion }}
                     </div>  
                 </fieldset>
             </div>
             <div class="col-md-6">        
                 <fieldset>
-                    <legend>Datos Vehiculo</legend>
+                    <legend>Datos Vehículo</legend>
                     <div class="col-md-6" style="padding-left: 0px;">                
                         <div class="form-group">
                             <label for="nombre_completo">Marca:</label>
@@ -139,11 +139,24 @@
                             {{  $inst->tag }}
                         </div>
                     </div>
+                    <div class="col-md-6" style="padding-right: 0px;"> 
+                        <div class="form-group">
+                            <label for="nombre_completo">Testigo Fotográfico:</label>
+                            <a href="{{  Storage::url($inst->nombre_img) }}" class="btn btn-primary active" target="blanck">
+                                <i class="fas fa-file-image"></i>
+                                Ver imagen
+                            </a>
+                            
+                        </div>
+                    </div>
                 </fieldset>
             </div>
         @endforeach
         <div class="col-md-12">
 		    <a class="btn btn-primary btn-sm" href="{{ route('instalaciones.index') }}" role="button">Regresar</a>
+            @can('Confirmar instalaciones')
+                <a class="btn btn-primary btn-sm" href="{{ route('confirmarInsta', $inst->id_instalacion) }}" role="button">Confirmar información</a>
+            @endcan
         </div>
 		<br>
 		<br>

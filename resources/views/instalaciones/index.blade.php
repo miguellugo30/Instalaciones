@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'AdminLTE')
+@section('title', 'Instalaciones')
 
 @section('content')
     <div class="col-md-12" id="viewInstalaciones">
@@ -73,7 +73,6 @@
 								</td>
 							@endcan
 								<td style="text-align: center;">
-									<a class="btn btn-warning btn-sm" href="{{ route('confirmarInsta', $inst->id_instalacion) }}" role="button"><i class="fas fa-edit"></i></a>
 									@if( $inst->estatus == 1 )
 										<i class="fas fa-times-circle fa-lg" style="color: red"></i>
 									@elseif( $inst->estatus == 2 )

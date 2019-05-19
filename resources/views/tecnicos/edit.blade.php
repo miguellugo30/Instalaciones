@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'AdminLTE')
+@section('title', 'Instalaciones')
 
 @section('content')
     <div class="col-md-12" id="viewAsesores">
@@ -15,11 +15,11 @@
 						<input type="text" class="form-control" id="nombre_completo" name="nombre_completo" placeholder="Nombre Completo" value="{{ $tecnico->nombre_completo }}">
 					</div>
 					<div class="form-group">
-						<label for="telefono">Télefono</label>
+						<label for="telefono">Teléfono</label>
 						<input type="text" class="form-control" id="telefono" name="telefono" placeholder="Telefono" value="{{ $tecnico->telefono }}">
 					</div>
 					<div class="form-group">
-						<label for="email">Correo Electronico</label>
+						<label for="email">Correo Electrónico</label>
 						<input type="text" class="form-control" id="email" name="email" placeholder="Correo Electronico" value="{{ $tecnico->email }}">
 					</div>
 				@endforeach
