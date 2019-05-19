@@ -123,12 +123,7 @@ return [
                     'text' => 'Usuarios',
                     'url'  => 'usuarios',
                     'icon'   => 'fa-genderless'
-                ],
-                [
-                    'text' => 'Asesores',
-                    'url'  => 'tecnicos',
-                    'icon'   => 'fa-genderless'
-                ],
+                ]
             ]
         ]
     ],
