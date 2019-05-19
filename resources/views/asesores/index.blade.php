@@ -8,14 +8,8 @@
 			
 			<legend>
 				Instalaciones
-				@can('Exportar instalaciones')
-					<a href="{{ route('excel.index') }}" type="button" class="btn btn-primary btn-sm" style="float: right;">
-						<i class="fas fa-file-excel"></i>
-						Exportar
-					</a>
-				@endcan
 				@can('Crear instalaciones')
-					<a href="{{ route('instalaciones.create') }}" type="button" class="btn btn-primary btn-sm" style="float: right;margin-right: 5px;">
+					<a href="{{ route('asesor.create') }}" type="button" class="btn btn-primary btn-sm" style="float: right;margin-right: 5px;">
 						<i class="fas fa-user-plus"></i>
 						Nueva Instalacion
 					</a>

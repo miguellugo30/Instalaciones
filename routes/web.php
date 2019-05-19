@@ -18,9 +18,11 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/confirmar/{id}', 'instalacionesController@confirm')->name('confirmarInsta');
 Route::resource('tecnicos', 'tecnicosController');
 Route::resource('instalaciones', 'instalacionesController');
 Route::resource('usuarios', 'UsuariosController');
 Route::resource('excel', 'excelController');
+Route::resource('asesor', 'AsesoresController');
 
 //Route::resource('p', 'excelController');

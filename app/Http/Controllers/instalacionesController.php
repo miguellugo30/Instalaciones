@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use DB;
+use App\User;
 use Illuminate\Http\Request;
 
 class instalacionesController extends Controller
@@ -22,13 +23,14 @@ class instalacionesController extends Controller
                                 'datos_cliente.nombre_completo AS cliente', 
                                 'datos_vehiculo.marca', 
                                 'datos_vehiculo.modelo', 
-                                'datos_asesor.nombre_completo as asesor', 
+                                'users.name as asesor', 
                                 'datos_equipo.modelo_equipo',
                                 'datos_instalacion.estatus')
-                    ->join( 'datos_asesor',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'datos_asesor.id_asesor' )
+                    ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
                     ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
                     ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
                     ->join( 'datos_equipo',   'datos_instalacion.datos_equipo_id_equipo',     '=', 'datos_equipo.id_equipo' )
+                    ->whereIn('datos_instalacion.estatus', [1, 2])
                     ->get();
 
         return view( 'instalaciones.index', compact('insta') );
@@ -43,7 +45,8 @@ class instalacionesController extends Controller
     public function create()
     {
         $asesores =  DB::table('datos_asesor')->get();
-        return view( 'instalaciones.create', compact('asesores') );
+        $users = User::all();
+        return view( 'instalaciones.create', compact('asesores', 'users') );
     }
 
     /**
@@ -105,13 +108,14 @@ class instalacionesController extends Controller
                                 'datos_cliente.nombre_completo AS cliente', 
                                 'datos_vehiculo.marca', 
                                 'datos_vehiculo.modelo', 
-                                'datos_asesor.nombre_completo as asesor', 
+                                'users.name as asesor', 
                                 'datos_equipo.modelo_equipo',
                                 'datos_instalacion.estatus')
-                    ->join( 'datos_asesor',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'datos_asesor.id_asesor' )
+                    ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
                     ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
                     ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
                     ->join( 'datos_equipo',   'datos_instalacion.datos_equipo_id_equipo',     '=', 'datos_equipo.id_equipo' )
+                    ->whereIn('datos_instalacion.estatus', [1, 2])
                     ->get();
 
         return view( 'instalaciones.index', compact('insta') );
@@ -132,7 +136,7 @@ class instalacionesController extends Controller
                                 'datos_cliente.nombre_completo AS cliente', 
                                 'datos_cliente.telefono AS telefono_cliente', 
                                 'datos_cliente.email AS email_cliente', 
-                                'datos_asesor.nombre_completo as asesor', 
+                                'users.name as asesor', 
                                 'datos_instalacion.fecha_ingreso', 
                                 'datos_instalacion.fecha_entrega', 
                                 'datos_equipo.modelo_equipo',
@@ -151,7 +155,7 @@ class instalacionesController extends Controller
                                 'datos_vehiculo.num_serie',
                                 'datos_vehiculo.tag'
                             )
-                    ->join( 'datos_asesor',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'datos_asesor.id_asesor' )
+                    ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
                     ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
                     ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
                     ->join( 'datos_equipo',   'datos_instalacion.datos_equipo_id_equipo',     '=', 'datos_equipo.id_equipo' )
@@ -184,7 +188,7 @@ class instalacionesController extends Controller
                         'datos_cliente.nombre_completo AS cliente', 
                         'datos_cliente.telefono AS telefono_cliente', 
                         'datos_cliente.email AS email_cliente', 
-                        'datos_asesor.nombre_completo as asesor', 
+                        'users.name as asesor', 
                         'datos_instalacion.fecha_ingreso', 
                         'datos_instalacion.fecha_entrega', 
                         'datos_equipo.modelo_equipo',
@@ -203,7 +207,7 @@ class instalacionesController extends Controller
                         'datos_vehiculo.num_serie',
                         'datos_vehiculo.tag'
                     )
-            ->join( 'datos_asesor',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'datos_asesor.id_asesor' )
+            ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
             ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
             ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
             ->join( 'datos_equipo',   'datos_instalacion.datos_equipo_id_equipo',     '=', 'datos_equipo.id_equipo' )
@@ -273,13 +277,14 @@ class instalacionesController extends Controller
                                 'datos_cliente.nombre_completo AS cliente', 
                                 'datos_vehiculo.marca', 
                                 'datos_vehiculo.modelo', 
-                                'datos_asesor.nombre_completo as asesor', 
+                                'users.name as asesor', 
                                 'datos_equipo.modelo_equipo',
                                 'datos_instalacion.estatus')
-                    ->join( 'datos_asesor',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'datos_asesor.id_asesor' )
+                    ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
                     ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
                     ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
                     ->join( 'datos_equipo',   'datos_instalacion.datos_equipo_id_equipo',     '=', 'datos_equipo.id_equipo' )
+                    ->whereIn('datos_instalacion.estatus', [1, 2])
                     ->get();
 
         return view( 'instalaciones.index', compact('insta') );
@@ -294,6 +299,57 @@ class instalacionesController extends Controller
      */
     public function destroy($id)
     {
-        //
+         DB::table('datos_instalacion')
+            ->where('id_instalacion', $id)
+            ->update([
+                        'estatus' => '3'
+                    ]);
+
+        $insta = DB::table('datos_instalacion')
+                    ->select(   'datos_instalacion.id_instalacion', 
+                                'datos_instalacion.fecha_ingreso', 
+                                'datos_instalacion.fecha_entrega', 
+                                'datos_cliente.nombre_completo AS cliente', 
+                                'datos_vehiculo.marca', 
+                                'datos_vehiculo.modelo', 
+                                'users.name as asesor', 
+                                'datos_equipo.modelo_equipo',
+                                'datos_instalacion.estatus')
+                    ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
+                    ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
+                    ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
+                    ->join( 'datos_equipo',   'datos_instalacion.datos_equipo_id_equipo',     '=', 'datos_equipo.id_equipo' )
+                    ->whereIn('datos_instalacion.estatus', [1, 2])
+                    ->get();
+
+        return redirect()->route('instalaciones.index', compact('insta') );
+    }
+
+    public function confirm($id)
+    {
+         DB::table('datos_instalacion')
+            ->where('id_instalacion', $id)
+            ->update([
+                        'estatus' => '2'
+                    ]);
+
+        $insta = DB::table('datos_instalacion')
+                    ->select(   'datos_instalacion.id_instalacion', 
+                                'datos_instalacion.fecha_ingreso', 
+                                'datos_instalacion.fecha_entrega', 
+                                'datos_cliente.nombre_completo AS cliente', 
+                                'datos_vehiculo.marca', 
+                                'datos_vehiculo.modelo', 
+                                'users.name as asesor', 
+                                'datos_equipo.modelo_equipo',
+                                'datos_instalacion.estatus')
+                    ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
+                    ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
+                    ->join( 'datos_vehiculo', 'datos_instalacion.datos_vehiculo_id_vehiculo', '=', 'datos_vehiculo.id_vehiculo' )
+                    ->join( 'datos_equipo',   'datos_instalacion.datos_equipo_id_equipo',     '=', 'datos_equipo.id_equipo' )
+                    ->whereIn('datos_instalacion.estatus', [1, 2])
+                    ->get();
+
+        return redirect()->route('instalaciones.index', compact('insta') );
     }
 }

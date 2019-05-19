@@ -28,9 +28,14 @@
                 <div class="form-group">
                     <select name="asesor" id="asesor" class="form-control input-sm">
                         <option value="">Selecciona un asesor</option>
-                        @foreach( $asesores as $asesor )
-                            <option value="{{ $asesor->id_asesor }}">{{ $asesor->nombre_completo }}</option>
+                        @foreach( $users as $user )
+                            <?php $rol = $user->getRoleNames(); ?>
+                            @if( $rol[0] == 'Asesor'  )
+                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+
+                            @endif
                         @endforeach
+                       
                     </select>
                 </div>
                 <div class="form-group">
