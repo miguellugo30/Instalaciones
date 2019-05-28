@@ -19,6 +19,8 @@ class instalacionesController extends Controller
 
         $rol = Auth::user()->getRoleNames();
 
+        dd( $rol );
+
         if ( $rol[0] == 'Asesor' ) {
 
             $insta = DB::table('datos_instalacion')
