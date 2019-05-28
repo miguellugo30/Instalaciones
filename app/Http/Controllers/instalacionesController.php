@@ -72,6 +72,8 @@ class instalacionesController extends Controller
         //$asesores =  DB::table('datos_asesor')->get();
         $rol = Auth::user()->getRoleNames();
 
+        dd( $rol );
+
         if ( $rol[0] == 'Asesor' ) {
             $users = User::where('id', Auth::id())->get();
         } else {
