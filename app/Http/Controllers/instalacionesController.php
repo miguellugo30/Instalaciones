@@ -78,7 +78,7 @@ class instalacionesController extends Controller
             $users = User::all();
         }
 
-        return view( 'instalaciones.create', compact('asesores', 'users') );
+        return view( 'instalaciones.create', compact('users') );
     }
 
     /**
