@@ -140,7 +140,7 @@ class instalacionesController extends Controller
             ]
         );
 
-                $rol = Auth::user()->getRoleNames();
+        $rol = Auth::user()->getRoleNames();
 
         if ( $rol[0] == 'Asesor' ) {
 
