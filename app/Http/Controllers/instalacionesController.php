@@ -22,8 +22,6 @@ class instalacionesController extends Controller
         $user = Auth::user();
         $rol = $user->getRoleNames();
 
-        dd( $rol );
-
         if ( $rol[0] == 'Asesor' ) {
 
             $insta = DB::table('datos_instalacion')
@@ -75,9 +73,8 @@ class instalacionesController extends Controller
     public function create()
     {
         //$asesores =  DB::table('datos_asesor')->get();
-        $rol = Auth::user()->getRoleNames();
-
-        dd( $rol );
+        $user = Auth::user();
+        $rol = $user->getRoleNames();
 
         if ( $rol[0] == 'Asesor' ) {
             $users = User::where('id', Auth::id())->get();
