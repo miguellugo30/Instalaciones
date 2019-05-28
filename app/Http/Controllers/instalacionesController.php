@@ -19,6 +19,8 @@ class instalacionesController extends Controller
     public function index()
     {
 
+        dd( Auth::user() );
+        $user = Auth::user();
         $rol = Auth::user()->getRoleNames();
 
         dd( $rol );
