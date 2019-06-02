@@ -48,29 +48,39 @@
         </div>       
         <div class="col-md-6">        
             <fieldset>
-                <legend>Datos Equipo</legend>
+                <legend>
+                    Datos Equipo
+                    <button class="btn btn-primary btn-xs newReductor" style="float: right;margin-right: 5px;"><i class="fas fa-plus"></i> Reductor</button>
+                    <button class="btn btn-danger  btn-xs deleteReductor" style="float: right;margin-right: 5px; display: none;"><i class="fas fa-minus"></i> Reductor</button>
+                    <button class="btn btn-primary btn-xs newTanque" style="float: right;margin-right: 5px;"><i class="fas fa-plus"></i> Tanque</button>
+                    <button class="btn btn-danger  btn-xs deleteTanque" style="float: right;margin-right: 5px; display: none;"><i class="fas fa-minus"></i> Tanque</button>
+                </legend>
                 <div class="form-group">
                     <input type="text" class="form-control input-sm" id="modelo_equipo" name="modelo_equipo" placeholder="Modelo">
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control input-sm solo-numero" id="num_serie_ecu" name="num_serie_ecu" placeholder="Núm. de serie ECU">
                 </div>
+                
                 <div class="col-md-6" style="padding-left: 0px;">                
                     <div class="form-group">
                         <input type="text" class="form-control input-sm" id="reductor" name="reductor" placeholder="reductor">
                     </div>
                 </div>
-                <div class="col-md-6" style="padding-right: 0px;">                
+                <div class="col-md-6" style="padding: 0px;">                
                     <div class="form-group">
                         <input type="text" class="form-control input-sm solo-numero" id="num_serie_reductor" name="num_serie_reductor" placeholder="Núm. de serie reductor">
                     </div>
                 </div>
+
+                <div class="col-md-12 nuevoReductor" style="padding: 0px;"></div>
+
                 <div class="col-md-6" style="padding-left: 0px;">                
                     <div class="form-group">
                         <input type="text" class="form-control input-sm" id="marca_tanque" name="marca_tanque" placeholder="Marca tanque">
                     </div>
                 </div>
-                <div class="col-md-6" style="padding-right: 0px;">                
+                <div class="col-md-6" style="padding: 0px;">                
                     <div class="form-group">
                         <input type="text" class="form-control input-sm" id="tipo_tanque" name="tipo_tanque" placeholder="Tipo de tanque">
                     </div>  
@@ -80,7 +90,7 @@
                         <input type="text" class="form-control input-sm" id="capacidad" name="capacidad" placeholder="Capacidad">
                     </div> 
                 </div> 
-                <div class="col-md-6" style="padding-right: 0px;">                
+                <div class="col-md-6" style="padding: 0px;">                
                     <div class="form-group">
                         <input type="text" class="form-control input-sm" id="num_serie_tanque" name="num_serie_tanque" placeholder="Núm. de serie tanque">
                     </div> 
@@ -88,6 +98,9 @@
                 <div class="form-group">
                     <input type="text" class="form-control input-sm solo-fecha" id="fecha_fabricacion" name="fecha_fabricacion" placeholder="Fecha de fabricacion">
                 </div>  
+
+                <div class="col-md-12 nuevoTanque" style="padding: 0px;"></div>
+                
             </fieldset>
         </div>
         <div class="col-md-6">        
@@ -103,7 +116,7 @@
                     <input type="text" class="form-control input-sm solo-fecha" id="anio" name="anio" placeholder="Año">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control input-sm" id="placas" name="placas" placeholder="Placas">
+                    <input type="text" class="form-control input-sm solo-placas" id="placas" name="placas" placeholder="Placas">
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control input-sm" id="num_serie" name="num_serie" placeholder="Número de serie">
@@ -117,11 +130,13 @@
                 </div>
             </fieldset>
         </div>
+        <div class="col-md-12" style="text-align: center;">
 			<button type="submit" class="btn btn-primary saveInst">Guardar</button>
 			<a class="btn btn-danger btn-sm" href="{{ route('instalaciones.index') }}" role="button">Cancelar</a>
 			<br>
 			<br>
-		</form>
+        </div>
+    </form>
 
 </fieldset>
 

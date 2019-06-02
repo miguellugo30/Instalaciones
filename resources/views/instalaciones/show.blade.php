@@ -58,46 +58,50 @@
                             {{  $inst->no_serie_ecu }}
                         </div>
                     </div>
+                    @foreach( $reductores as $reductor )
                     <div class="col-md-6" style="padding-left: 0px;">                
                         <div class="form-group">
                             <label for="nombre_completo">Reductor:</label>
-                            {{  $inst->reductor }}
+                            {{ $reductor->reductor }}
                         </div>
                     </div>
                     <div class="col-md-6" style="padding-right: 0px;">                
                         <div class="form-group">
                             <label for="nombre_completo">Núm. de serie reductor:</label>
-                            {{  $inst->no_serie_reductor }}
+                            {{ $reductor->no_serie_reductor }}
                         </div>
                     </div>
+                    @endforeach
+                    @foreach( $tanques as $tanque )
                     <div class="col-md-6" style="padding-left: 0px;">                
                         <div class="form-group">
                             <label for="nombre_completo">Marca tanque:</label>
-                            {{  $inst->marca_tanque }}
+                            {{ $tanque->marca_tanque }}
                         </div>
                     </div>
                     <div class="col-md-6" style="padding-right: 0px;">                
                         <div class="form-group">
                             <label for="nombre_completo">Tipo de tanque:</label>
-                            {{  $inst->tipo_tanque }}
+                            {{ $tanque->tipo_tanque }}
                         </div>  
                     </div>
                     <div class="col-md-6" style="padding-left: 0px;">                
                         <div class="form-group">
                             <label for="nombre_completo">Capacidad:</label>
-                            {{  $inst->capacidad }}
+                            {{ $tanque->capacidad }}
                         </div> 
                     </div> 
                     <div class="col-md-6" style="padding-right: 0px;">                
                         <div class="form-group">
                             <label for="nombre_completo">Núm. de serie tanque:</label>
-                            {{  $inst->serie_tanque }}
+                            {{ $tanque->serie_tanque }}
                         </div> 
                     </div> 
                     <div class="form-group">
                         <label for="nombre_completo">Fecha de fabricación:</label>
-                            {{  $inst->fecha_fabricacion }}
+                            {{ $tanque->fecha_fabricacion }}
                     </div>  
+                    @endforeach
                 </fieldset>
             </div>
             <div class="col-md-6">        
@@ -152,7 +156,7 @@
                 </fieldset>
             </div>
         @endforeach
-        <div class="col-md-12">
+        <div class="col-md-12" style="text-align: center;">
 		    <a class="btn btn-primary btn-sm" href="{{ route('instalaciones.index') }}" role="button">Regresar</a>
             @can('Confirmar instalaciones')
                 <a class="btn btn-primary btn-sm" href="{{ route('confirmarInsta', $inst->id_instalacion) }}" role="button">Confirmar información</a>

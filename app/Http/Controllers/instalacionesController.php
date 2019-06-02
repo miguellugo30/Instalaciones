@@ -72,7 +72,6 @@ class instalacionesController extends Controller
      */
     public function create()
     {
-        //$asesores =  DB::table('datos_asesor')->get();
         $user = Auth::user();
         $rol = $user->getRoleNames();
 
@@ -93,7 +92,6 @@ class instalacionesController extends Controller
      */
     public function store(Request $request)
     {
-
 
         $file = $request->file('testigoFoto');//obtenemos el campo file definido en el formulario
         $nombre = $file->getClientOriginalName();//obtenemos el nombre del archivo
@@ -120,14 +118,45 @@ class instalacionesController extends Controller
                     ->insertGetId([
                                     'modelo_equipo'     => $request->input("modelo_equipo"),
                                     'no_serie_ecu'      => $request->input("num_serie_ecu"),
-                                    'reductor'          => $request->input("reductor"),
-                                    'no_serie_reductor' => $request->input("num_serie_reductor"),
-                                    'marca_tanque'      => $request->input("marca_tanque"),
-                                    'tipo_tanque'       => $request->input("tipo_tanque"),
-                                    'capacidad'         => $request->input("capacidad"),
-                                    'serie_tanque'      => $request->input("num_serie_tanque"),
-                                    'fecha_fabricacion' => $request->input("fecha_fabricacion")
-                                ]);
+                                ]);                           
+
+        DB::table('datos_reductores')
+                    ->insert([
+                                'reductor'          => $request->input("reductor"),
+                                'no_serie_reductor' => $request->input("num_serie_reductor"),
+                                'equipo_id'         => $idEquipo
+                            ]);
+
+        if ( null !== $request->input("reductor_1") ) {
+            DB::table('datos_reductores')
+                    ->insert([
+                                'reductor'          => $request->input("reductor_1"),
+                                'no_serie_reductor' => $request->input("num_serie_reductor_1"),
+                                'equipo_id'         => $idEquipo
+                            ]);
+        }
+
+        DB::table('datos_tanques')
+                    ->insert([
+                                'marca_tanque'      => $request->input("marca_tanque"),
+                                'tipo_tanque'       => $request->input("tipo_tanque"),
+                                'capacidad'         => $request->input("capacidad"),
+                                'serie_tanque'      => $request->input("num_serie_tanque"),
+                                'fecha_fabricacion' => $request->input("fecha_fabricacion"),
+                                'equipo_id'         => $idEquipo
+                            ]);
+
+        if ( null !== $request->input("marca_tanque_1") ) {
+            DB::table('datos_tanques')
+                    ->insert([
+                                'marca_tanque'      => $request->input("marca_tanque_1"),
+                                'tipo_tanque'       => $request->input("tipo_tanque_1"),
+                                'capacidad'         => $request->input("capacidad_1"),
+                                'serie_tanque'      => $request->input("num_serie_tanque_1"),
+                                'fecha_fabricacion' => $request->input("fecha_fabricacion_1"),
+                                'equipo_id'         => $idEquipo
+                            ]);
+        }
 
         $now = date('Y-m-d H:i:s');
 
@@ -208,20 +237,14 @@ class instalacionesController extends Controller
                                 'datos_instalacion.fecha_entrega', 
                                 'datos_equipo.modelo_equipo',
                                 'datos_equipo.no_serie_ecu',
-                                'datos_equipo.reductor',
-                                'datos_equipo.no_serie_reductor' ,
-                                'datos_equipo.marca_tanque',
-                                'datos_equipo.tipo_tanque',
-                                'datos_equipo.capacidad',
-                                'datos_equipo.serie_tanque',
-                                'datos_equipo.fecha_fabricacion',
                                 'datos_vehiculo.marca', 
                                 'datos_vehiculo.modelo',
                                 'datos_vehiculo.anio',
                                 'datos_vehiculo.placas',
                                 'datos_vehiculo.num_serie',
                                 'datos_vehiculo.tag',
-                                'datos_instalacion.nombre_img'
+                                'datos_instalacion.nombre_img',
+                                'datos_equipo.id_equipo'
                             )
                     ->join( 'users',   'datos_instalacion.datos_asesor_id_asesor',     '=', 'users.id' )
                     ->join( 'datos_cliente',  'datos_instalacion.datos_cliente_id_cliente',   '=', 'datos_cliente.id_cliente' )
@@ -229,11 +252,39 @@ class instalacionesController extends Controller
                     ->join( 'datos_equipo',   'datos_instalacion.datos_equipo_id_equipo',     '=', 'datos_equipo.id_equipo' )
                     ->where( 'id_instalacion', $id )
                     ->get();
+        
+        foreach ($insta as $key => $value) {
+            $val = get_object_vars( $value );
+
+           $idEquipo = $val['id_equipo'];
+
+        }
+
+        $reductores = DB::table('datos_reductores')
+                    ->select(
+                                'datos_reductores.id_reductor',
+                                'datos_reductores.reductor',
+                                'datos_reductores.no_serie_reductor'
+                            )
+                    ->where( 'equipo_id', $idEquipo )
+                    ->get();
+
+         $tanques = DB::table('datos_tanques')
+                    ->select(
+                                'datos_tanques.id_tanque',
+                                'datos_tanques.marca_tanque',
+                                'datos_tanques.tipo_tanque',
+                                'datos_tanques.capacidad',
+                                'datos_tanques.serie_tanque',
+                                'datos_tanques.fecha_fabricacion'
+                            )
+                    ->where( 'equipo_id', $idEquipo )
+                    ->get();
 
         $public_path = public_path();
         $url = $public_path.'/storage/';
 
-        return view( 'instalaciones.show', compact('insta', 'url') );
+        return view( 'instalaciones.show', compact('insta', 'url', 'reductores', 'tanques') );
     }
 
     /**

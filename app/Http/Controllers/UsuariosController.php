@@ -18,14 +18,8 @@ class UsuariosController extends Controller
      */
     public function index()
     {
-        /*
-        $user = User::find(2);
-        $roles = $user->getRoleNames();
-        $permiso = $user->hasRole( 'Administrador' );
-        */
         $users = User::all();
         return view( 'usuarios.index', compact('users') );
-
     }
 
     /**
@@ -37,9 +31,6 @@ class UsuariosController extends Controller
     {
         
         $roles    = DB::table('roles')->pluck('name', 'id');
-        //$permisos = DB::table('permissions')->pluck('name', 'id');
-
-        //$roles    = Role::all();
         $permisos = Permission::all();
         return view( 'usuarios.create', compact('roles', 'permisos') );
     }

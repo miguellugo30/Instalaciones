@@ -1,16 +1,151 @@
-$(document).ready(function() {
-	$("#tableAsesores").DataTable();
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ })
+/************************************************************************/
+/******/ ({
 
-	$("#tableInstalaciones").DataTable();
+/***/ "./resources/js/custom.js":
+/*!********************************!*\
+  !*** ./resources/js/custom.js ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
 
-	 $('.solo-numero').keyup(function (){
-        this.value = (this.value + '').replace(/[^0-9]/g, '');
-    });
-
-    $('.solo-fecha').keyup(function (){
-        this.value = (this.value + '').replace(/[^0-9,-]/g, '');
-    });
-
-    $('.solo-fecha').datepicker({ dateFormat: 'yy-mm-dd' });
-
+$(document).ready(function () {
+  $("#tableAsesores").DataTable();
+  $("#tableInstalaciones").DataTable();
+  $('.solo-numero').keyup(function () {
+    this.value = (this.value + '').replace(/[^0-9]/g, '');
+  });
+  $('.solo-fecha').keyup(function () {
+    this.value = (this.value + '').replace(/[^0-9,-]/g, '');
+  });
+  $('.solo-placas').keyup(function () {
+    this.value = (this.value + '').replace(/[^0-9, A-Z , a-z]/g, '');
+  });
+  $('.solo-fecha').datepicker({
+    dateFormat: 'yy-mm-dd'
+  });
+  $(".newReductor").click(function (event) {
+    event.preventDefault();
+    $(".nuevoReductor").append('<div class="col-md-6" style="padding-left: 0px;">' + '<div class="form-group">' + '<input type="text" class="form-control input-sm" id="reductor_1" name="reductor_1" placeholder="reductor">' + '</div>' + '</div>' + '<div class="col-md-6" style="padding: 0px;">' + '<div class="form-group">' + '<input type="text" class="form-control input-sm solo-numero" id="num_serie_reductor_1" name="num_serie_reductor_1" placeholder="Núm. de serie reductor">' + '</div>' + '</div>' + '<div class="col-md-1" style="padding: 0px;float:right">' + '</div>');
+    $(".newReductor").slideUp();
+    $(".deleteReductor").slideDown();
+  });
+  $(".deleteReductor").click(function (event) {
+    event.preventDefault();
+    $(".nuevoReductor").empty();
+    $(".newReductor").slideDown();
+    $(".deleteReductor").slideUp();
+  });
+  $(".newTanque").click(function (event) {
+    event.preventDefault();
+    $(".nuevoTanque").append('<div class="col-md-6" style="padding-left: 0px;">' + '<div class="form-group">' + '<input type="text" class="form-control input-sm" id="marca_tanque_1" name="marca_tanque_1" placeholder="Marca tanque">' + '</div>' + '</div>' + '<div class="col-md-6" style="padding: 0px;">' + '<div class="form-group">' + '<input type="text" class="form-control input-sm" id="tipo_tanque_1" name="tipo_tanque_1" placeholder="Tipo de tanque">' + '</div>' + '</div>' + '<div class="col-md-6" style="padding-left: 0px;">' + '<div class="form-group">' + '<input type="text" class="form-control input-sm" id="capacidad_1" name="capacidad_1" placeholder="Capacidad">' + '</div>' + '</div>' + '<div class="col-md-6" style="padding: 0px;">' + '<div class="form-group">' + '<input type="text" class="form-control input-sm" id="num_serie_tanque_1" name="num_serie_tanque_1" placeholder="Núm. de serie tanque">' + '</div>' + '</div>' + '<div class="form-group">' + '<input type="text" class="form-control input-sm solo-fecha" id="fecha_fabricacion_1" name="fecha_fabricacion_1" placeholder="Fecha de fabricacion">' + '</div> ');
+    $(".newTanque").slideUp();
+    $(".deleteTanque").slideDown();
+  });
+  $(".deleteTanque").click(function (event) {
+    event.preventDefault();
+    $(".nuevoTanque").empty();
+    $(".newTanque").slideDown();
+    $(".deleteTanque").slideUp();
+  });
 });
+
+/***/ }),
+
+/***/ 1:
+/*!**************************************!*\
+  !*** multi ./resources/js/custom.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! /var/www/html/appInsta/resources/js/custom.js */"./resources/js/custom.js");
+
+
+/***/ })
+
+/******/ });
