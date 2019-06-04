@@ -95,9 +95,16 @@
                         <input type="text" class="form-control input-sm" id="num_serie_tanque" name="num_serie_tanque" placeholder="Núm. de serie tanque">
                     </div> 
                 </div> 
-                <div class="form-group">
-                    <input type="text" class="form-control input-sm solo-fecha" id="fecha_fabricacion" name="fecha_fabricacion" placeholder="Fecha de fabricacion">
-                </div>  
+                <div class="col-md-6" style="padding-left: 0px;">
+                    <div class="form-group">
+                        <input type="text" class="form-control input-sm" id="cilindros" name="cilindros" placeholder="Cilindros">
+                    </div>              
+                </div>
+                <div class="col-md-6" style="padding: 0px;">                
+                    <div class="form-group">
+                        <input type="text" class="form-control input-sm solo-fecha" id="fecha_fabricacion" name="fecha_fabricacion" placeholder="Fecha de fabricacion">
+                    </div>  
+                </div>
 
                 <div class="col-md-12 nuevoTanque" style="padding: 0px;"></div>
                 
@@ -110,10 +117,13 @@
                     <input type="text" class="form-control input-sm" id="marca" name="marca" placeholder="Marca">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control input-sm" id="modelo" name="modelo" placeholder="Modelo">
+                    <input type="text" class="form-control input-sm" id="modelo" name="modelo" placeholder="Sub-Marca">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control input-sm solo-fecha" id="anio" name="anio" placeholder="Año">
+                    <input type="text" class="form-control input-sm solo-fecha" id="anio" name="anio" placeholder="Modelo">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control input-sm" id="color" name="color" placeholder="Color">
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control input-sm solo-placas" id="placas" name="placas" placeholder="Placas">

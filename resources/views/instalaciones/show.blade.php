@@ -97,10 +97,18 @@
                             {{ $tanque->serie_tanque }}
                         </div> 
                     </div> 
-                    <div class="form-group">
-                        <label for="nombre_completo">Fecha de fabricación:</label>
-                            {{ $tanque->fecha_fabricacion }}
-                    </div>  
+                    <div class="col-md-6" style="padding-left: 0px;">
+                        <div class="form-group">
+                            <label for="nombre_completo">Cilindros:</label>
+                            {{ $tanque->cilindros }}
+                        </div>                 
+                    </div> 
+                    <div class="col-md-6" style="padding-right: 0px;">                
+                        <div class="form-group">
+                            <label for="nombre_completo">Fecha de fabricación:</label>
+                                {{ $tanque->fecha_fabricacion }}
+                        </div>  
+                    </div> 
                     @endforeach
                 </fieldset>
             </div>
@@ -115,14 +123,20 @@
                     </div>
                     <div class="col-md-6" style="padding-right: 0px;"> 
                         <div class="form-group">
-                            <label for="nombre_completo">Modelo:</label>
+                            <label for="nombre_completo">Sub-Marca:</label>
                             {{  $inst->modelo }}
                         </div>
                     </div>
                     <div class="col-md-6" style="padding-left: 0px;">                
                         <div class="form-group">
-                            <label for="nombre_completo">Año:</label>
+                            <label for="nombre_completo">Modelo:</label>
                             {{  $inst->anio }}
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="padding-left: 0px;">                
+                        <div class="form-group">
+                            <label for="nombre_completo">Color:</label>
+                            {{  $inst->color }}
                         </div>
                     </div>
                     <div class="col-md-6" style="padding-right: 0px;"> 

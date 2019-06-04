@@ -96,10 +96,10 @@
 	                    <input type="text" class="form-control input-sm" id="marca" name="marca" placeholder="Marca" value="{{ $inst->marca }}">
 	                </div>
 	                <div class="form-group">
-	                    <input type="text" class="form-control input-sm" id="modelo" name="modelo" placeholder="Modelo" value="{{ $inst->modelo }}">
+	                    <input type="text" class="form-control input-sm" id="modelo" name="modelo" placeholder="Sub-Marca" value="{{ $inst->modelo }}">
 	                </div>
 	                <div class="form-group">
-	                    <input type="text" class="form-control input-sm solo-fecha" id="anio" name="anio" placeholder="Año" value="{{ $inst->anio }}">
+	                    <input type="text" class="form-control input-sm solo-fecha" id="anio" name="anio" placeholder="Modelo" value="{{ $inst->anio }}">
 	                </div>
 	                <div class="form-group">
 	                    <input type="text" class="form-control input-sm" id="placas" name="placas" placeholder="Placas" value="{{ $inst->placas }}">

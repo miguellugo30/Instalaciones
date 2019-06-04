@@ -71,8 +71,15 @@ $(document).ready(function() {
                                         '<input type="text" class="form-control input-sm" id="num_serie_tanque_1" name="num_serie_tanque_1" placeholder="Núm. de serie tanque">'+
                                     '</div>'+ 
                                 '</div>'+
-                                '<div class="form-group">'+
-                                    '<input type="text" class="form-control input-sm solo-fecha" id="fecha_fabricacion_1" name="fecha_fabricacion_1" placeholder="Fecha de fabricacion">'+
+                                '<div class="col-md-6" style="padding-left: 0px;">'+
+                                    '<div class="form-group">'+
+                                        '<input type="text" class="form-control input-sm" id="cilindros_1" name="cilindro_1" placeholder="Cilindros">'+
+                                    '</div>              '+
+                                '</div>'+
+                                '<div class="col-md-6" style="padding: 0px;">'+ 
+                                    '<div class="form-group">'+
+                                        '<input type="text" class="form-control input-sm solo-fecha" id="fecha_fabricacion_1" name="fecha_fabricacion_1" placeholder="Fecha de fabricacion">'+
+                                    '</div> '+
                                 '</div> ');
         $(".newTanque").slideUp();
         $(".deleteTanque").slideDown();

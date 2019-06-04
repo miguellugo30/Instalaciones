@@ -92,7 +92,6 @@ class instalacionesController extends Controller
      */
     public function store(Request $request)
     {
-
         $file = $request->file('testigoFoto');//obtenemos el campo file definido en el formulario
         $nombre = $file->getClientOriginalName();//obtenemos el nombre del archivo
         \Storage::disk('public')->put($nombre,  \File::get($file));//indicamos que queremos guardar un nuevo archivo en el disco local
@@ -110,6 +109,7 @@ class instalacionesController extends Controller
                                         'modelo'    => $request->input("modelo"),
                                         'anio'      => $request->input("anio"),
                                         'placas'    => $request->input("placas"),
+                                        'color'    => $request->input("color"),
                                         'num_serie' => $request->input("num_serie"),
                                         'tag'       => $request->input("tag")
                                     ]);
@@ -142,6 +142,7 @@ class instalacionesController extends Controller
                                 'tipo_tanque'       => $request->input("tipo_tanque"),
                                 'capacidad'         => $request->input("capacidad"),
                                 'serie_tanque'      => $request->input("num_serie_tanque"),
+                                'cilindros'         => $request->input("cilindros"),
                                 'fecha_fabricacion' => $request->input("fecha_fabricacion"),
                                 'equipo_id'         => $idEquipo
                             ]);
@@ -153,6 +154,7 @@ class instalacionesController extends Controller
                                 'tipo_tanque'       => $request->input("tipo_tanque_1"),
                                 'capacidad'         => $request->input("capacidad_1"),
                                 'serie_tanque'      => $request->input("num_serie_tanque_1"),
+                                'cilindros'         => $request->input("cilindro_1"),
                                 'fecha_fabricacion' => $request->input("fecha_fabricacion_1"),
                                 'equipo_id'         => $idEquipo
                             ]);
@@ -242,6 +244,7 @@ class instalacionesController extends Controller
                                 'datos_vehiculo.anio',
                                 'datos_vehiculo.placas',
                                 'datos_vehiculo.num_serie',
+                                'datos_vehiculo.color',
                                 'datos_vehiculo.tag',
                                 'datos_instalacion.nombre_img',
                                 'datos_equipo.id_equipo'
@@ -276,6 +279,7 @@ class instalacionesController extends Controller
                                 'datos_tanques.tipo_tanque',
                                 'datos_tanques.capacidad',
                                 'datos_tanques.serie_tanque',
+                                'datos_tanques.cilindros',
                                 'datos_tanques.fecha_fabricacion'
                             )
                     ->where( 'equipo_id', $idEquipo )
